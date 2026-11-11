@@ -119,3 +119,20 @@ def registrar_resultados(chave, valor):
 
 def ler_resultados():
     return json.loads(ARQ_RESULTADOS.read_text(encoding="utf-8"))
+
+
+# ---------------------------------------------------------------- A2 (modelagem)
+RANDOM_STATE = 42
+SAIDA_A2 = SAIDA / "a2"
+FIGURAS_A2 = SAIDA_A2 / "figuras"
+ARTIGO = RAIZ / "artigo"
+for _p in (SAIDA_A2, FIGURAS_A2, ARTIGO / "figuras", ARTIGO / "tabelas"):
+    _p.mkdir(parents=True, exist_ok=True)
+
+NUM_LOG = ["IMC", "PA SISTOLICA", "FC"]
+NUM_LINEAR = ["IDADE", "PA DIASTOLICA"]
+NOMINAIS = ["SEXO", "Convenio", "PULSOS", "B2", "SOPRO", "MOTIVO1", "MOTIVO2"]
+SINTOMAS = ["Cianose", "Desmaio/tontura", "Dispneia", "Dor precordial", "Ganho de peso",
+            "Outro", "Palpitação"]
+# valor = colunas excluídas em cada cenário de atributos
+CENARIOS = {"principal": ["SOPRO"], "com_sopro": [], "restrito": ["SOPRO", "MOTIVO1", "MOTIVO2"]}
