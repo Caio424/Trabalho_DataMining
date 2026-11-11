@@ -1,0 +1,15 @@
+__pycache__/
+.pytest_cache/
+.superpowers/
+artigo/*.aux
+artigo/*.log
+artigo/*.out
+artigo/*.bbl
+artigo/*.blg
+UCMF_raw.csv
+saida/UCMF_clean.csv
+saida/UCMF_transformed.csv
+*.docx
+*.pdf
+!artigo/figuras/*.pdf
+!artigo/main.pdf

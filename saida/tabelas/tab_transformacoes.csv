@@ -1,0 +1,10 @@
+﻿Transformação,Variáveis,Justificativa
+Remoção de colunas,"ID, Atendimento, DN, Peso, Altura","ID não é preditivo; as datas já estão resumidas em IDADE; Peso e Altura são quase colineares com IDADE (ρ de Spearman = 0,94 e 0,96) e sua informação de composição corporal está no IMC"
+Engenharia de atributos,HDA 1 + HDA2 → 7 indicadores de sintoma + hda_ausente,"HDA2 tem 96% de ausentes; como as duas colunas usam o mesmo vocabulário, a união em indicadores (multi-hot) preserva o 2º histórico sem descartar a coluna"
+Indicadores de ausência,"pa_ausente, imc_ausente, ppa_ausente",Variáveis com >20% de ausentes; a ausência é informativa (% Anormal difere entre quem teve ou não a PA medida)
+Codificação ordinal,"PPA: Normal=0, Pré-HAS=1, HAS-1=2, HAS-2=3",As classes têm ordem clínica de gravidade; ausentes = 0 (a maioria das medidas é Normal) acompanhados de ppa_ausente
+Transformação log(1 + x),"IMC, PA SISTOLICA, FC","Assimetria > 1 (cauda à direita): IMC 1,34→0,58; PA SISTOLICA 1,19→0,65; FC 1,16→0,53; reduz a influência de valores altos em modelos lineares/distância"
+Imputação,"IDADE, IMC, PAS, PAD, FC → mediana",Mediana é robusta à assimetria; combinada aos indicadores de ausência não esconde o padrão de falta
+Padronização (z-score),"IDADE, IMC, PA SISTOLICA, PA DIASTOLICA, FC","Escalas diferentes (anos, kg/m², mmHg, bpm); necessário para KNN, SVM, regressão regularizada e redes"
+One-hot encoding,"SEXO, Convenio, PULSOS, B2, SOPRO, MOTIVO1, MOTIVO2",Categorias sem ordem; ausentes viram 'Nao informado'; 9 categorias com n<30 agrupadas em 'Outro' para evitar colunas quase vazias
+Codificação do alvo,NORMAL X ANORMAL → ALVO_ANORMAL (1 = Anormal),Formato binário exigido pelos classificadores

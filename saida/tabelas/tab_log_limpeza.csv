@@ -1,0 +1,35 @@
+﻿Variável,Problema,Solução,Registros afetados
+(linhas),Registros duplicados (idênticos exceto pelo ID),Removidos,987
+NORMAL X ANORMAL,"Grafias inconsistentes ('anormal', 'Normais')",Padronização para Anormal / Normal,2
+NORMAL X ANORMAL,Rótulo ausente,Linhas removidas (rótulo não é imputável),416
+Atendimento,Datas como número serial do Excel,Convertidas (origem 30/12/1899),304
+Atendimento,"Texto livre/formato inválido (ex.: '5 anos', '??')",Convertido em ausente,0
+Atendimento,Ano de 2 dígitos lido no século errado (ex.: 2066),Datas após 2010 convertidas em ausente,2
+DN,Datas como número serial do Excel,Convertidas (origem 30/12/1899),121
+DN,"Texto livre/formato inválido (ex.: '5 anos', '??')",Convertido em ausente,116
+DN,Ano de 2 dígitos lido no século errado (ex.: 2066),Datas após 2010 convertidas em ausente,10
+IDADE,Erro sistemático: valor ~3.8% acima de (Atendimento − DN),"Recalculada a partir das datas (÷365,25); sem data: IDADE original corrigida pelo fator",7759
+IDADE,Valores implausíveis (fora de [0; 19]); 119 negativas (atendimento antes do nascimento),Convertidos em ausente,197
+Peso,Zero usado como 'não medido',Convertido em ausente,1652
+Peso,Valores implausíveis (fora de [1; 150]),Convertidos em ausente,4
+Altura,Zero usado como 'não medido',Convertido em ausente,3455
+Altura,Valores implausíveis (fora de [40; 200]),Convertidos em ausente,12
+IMC,Inconsistente com Peso/Altura² (ex.: 848) e arredondado,Recalculado = Peso/Altura² (m),120
+IMC,Valores implausíveis (fora de [10; 40]),Convertidos em ausente,49
+PA SISTOLICA,Valores implausíveis (fora de [60; 200]),Convertidos em ausente,2
+PA DIASTOLICA,Valores implausíveis (fora de [30; 130]),Convertidos em ausente,2
+PA SIST./DIAST.,PAS ≤ PAD (fisiologicamente impossível),Par convertido em ausente,1
+PPA,Erro de fórmula ('#VALUE!') e 'Não Calculado' mesmo com PA medida,Convertidos em ausente,9183
+PPA,Classes separadas por PAS/PAD (9 níveis),Agrupadas em 4 níveis ordinais: Normal < Pré-HAS < HAS-1 < HAS-2,2072
+PPA,Classificação sem PA válida que a sustente,Convertida em ausente,1
+FC,"Armazenada como texto; faixas digitadas ('80-90', '156 a 168')",Convertida para número; faixa → ponto médio,16
+FC,Valores implausíveis (fora de [40; 220]),Convertidos em ausente,17
+SEXO,5 grafias (M/Masculino/masculino...),Padronização para F / M,873
+SEXO,Categoria 'Indeterminado' (não informado),Convertida em ausente,523
+SOPRO,Caixa/acento ('Sistólico' × 'sistólico'),Padronização para Ausente / Contínuo / Diastólico / Sistólico / Sistólico e diastólico,735
+PULSOS,Caixa ('Normais' × 'NORMAIS'),Padronização para Amplos / Diminuídos / Femorais diminuídos / Normais / Outro,3
+Convenio,367 grafias ('Camed' × 'CAMED'); cauda longa,Caixa/pontuação padronizadas (231 valores); <1% → 'OUTROS',1721
+Convenio,Ausente,Categoria explícita 'NAO INFORMADO',3158
+MOTIVO1,Código numérico embutido no texto,Prefixo removido,11329
+MOTIVO2,Código numérico embutido no texto,Prefixo removido,8158
+HDA2,96% ausente,Unida a HDA 1 em indicadores de sintoma (transformação),11068

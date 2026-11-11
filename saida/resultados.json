@@ -1,0 +1,513 @@
+{
+  "bruto_shape": [
+    12873,
+    21
+  ],
+  "bruto_duplicatas_sem_id": 987,
+  "bruto_ids_duplicados": 0,
+  "bruto_ausentes_pct": {
+    "ID": 0.0,
+    "Peso": 2.5,
+    "Altura": 0.0,
+    "IMC": 36.7,
+    "Atendimento": 7.6,
+    "DN": 10.7,
+    "IDADE": 11.6,
+    "Convenio": 31.9,
+    "PULSOS": 9.3,
+    "PA SISTOLICA": 60.0,
+    "PA DIASTOLICA": 60.1,
+    "PPA": 1.7,
+    "NORMAL X ANORMAL": 9.1,
+    "B2": 9.2,
+    "SOPRO": 9.1,
+    "FC": 14.5,
+    "HDA 1": 33.2,
+    "HDA2": 96.8,
+    "SEXO": 0.0,
+    "MOTIVO1": 8.2,
+    "MOTIVO2": 27.2
+  },
+  "bruto_n_categorias": {
+    "SEXO": 6,
+    "Convenio": 374,
+    "PULSOS": 7,
+    "PPA": 9,
+    "B2": 5,
+    "SOPRO": 7,
+    "HDA 1": 8,
+    "HDA2": 8,
+    "MOTIVO1": 5,
+    "MOTIVO2": 16,
+    "NORMAL X ANORMAL": 4
+  },
+  "idade_fator_erro": 1.0377,
+  "idade_dias_por_ano_implicito": 352.0,
+  "convenio_grafias": {
+    "bruto": 367,
+    "padronizado": 231
+  },
+  "limpo_shape": [
+    11470,
+    21
+  ],
+  "limpo_ausentes_pct": {
+    "ID": 0.0,
+    "Peso": 17.1,
+    "Altura": 30.2,
+    "IMC": 33.9,
+    "Atendimento": 0.8,
+    "DN": 5.1,
+    "IDADE": 6.7,
+    "Convenio": 0.0,
+    "PULSOS": 0.3,
+    "PA SISTOLICA": 55.5,
+    "PA DIASTOLICA": 55.6,
+    "PPA": 81.9,
+    "NORMAL X ANORMAL": 0.0,
+    "B2": 0.2,
+    "SOPRO": 0.1,
+    "FC": 6.2,
+    "HDA 1": 25.9,
+    "HDA2": 96.5,
+    "SEXO": 4.6,
+    "MOTIVO1": 1.2,
+    "MOTIVO2": 22.1
+  },
+  "limpo_alvo": {
+    "Normal": 6576,
+    "Anormal": 4894
+  },
+  "correlacao_spearman": {
+    "IDADE": {
+      "IDADE": 1.0,
+      "Peso": 0.94,
+      "Altura": 0.96,
+      "IMC": 0.36,
+      "PA SISTOLICA": 0.41,
+      "PA DIASTOLICA": 0.31,
+      "FC": -0.68
+    },
+    "Peso": {
+      "IDADE": 0.94,
+      "Peso": 1.0,
+      "Altura": 0.98,
+      "IMC": 0.52,
+      "PA SISTOLICA": 0.54,
+      "PA DIASTOLICA": 0.42,
+      "FC": -0.68
+    },
+    "Altura": {
+      "IDADE": 0.96,
+      "Peso": 0.98,
+      "Altura": 1.0,
+      "IMC": 0.39,
+      "PA SISTOLICA": 0.52,
+      "PA DIASTOLICA": 0.39,
+      "FC": -0.7
+    },
+    "IMC": {
+      "IDADE": 0.36,
+      "Peso": 0.52,
+      "Altura": 0.39,
+      "IMC": 1.0,
+      "PA SISTOLICA": 0.49,
+      "PA DIASTOLICA": 0.39,
+      "FC": -0.28
+    },
+    "PA SISTOLICA": {
+      "IDADE": 0.41,
+      "Peso": 0.54,
+      "Altura": 0.52,
+      "IMC": 0.49,
+      "PA SISTOLICA": 1.0,
+      "PA DIASTOLICA": 0.68,
+      "FC": -0.21
+    },
+    "PA DIASTOLICA": {
+      "IDADE": 0.31,
+      "Peso": 0.42,
+      "Altura": 0.39,
+      "IMC": 0.39,
+      "PA SISTOLICA": 0.68,
+      "PA DIASTOLICA": 1.0,
+      "FC": -0.16
+    },
+    "FC": {
+      "IDADE": -0.68,
+      "Peso": -0.68,
+      "Altura": -0.7,
+      "IMC": -0.28,
+      "PA SISTOLICA": -0.21,
+      "PA DIASTOLICA": -0.16,
+      "FC": 1.0
+    }
+  },
+  "categorias_alvo": {
+    "SEXO": {
+      "F": [
+        43.1,
+        4487
+      ],
+      "M": [
+        41.3,
+        6456
+      ]
+    },
+    "PULSOS": {
+      "Amplos": [
+        86.5,
+        52
+      ],
+      "Diminuídos": [
+        88.2,
+        17
+      ],
+      "Femorais diminuídos": [
+        92.1,
+        38
+      ],
+      "Normais": [
+        42.1,
+        11291
+      ],
+      "Outro": [
+        72.2,
+        36
+      ]
+    },
+    "PPA": {
+      "HAS-1": [
+        37.0,
+        73
+      ],
+      "HAS-2": [
+        50.0,
+        94
+      ],
+      "Normal": [
+        34.6,
+        1784
+      ],
+      "Pré-HAS": [
+        35.0,
+        120
+      ]
+    },
+    "B2": {
+      "Desdob fixo": [
+        89.9,
+        148
+      ],
+      "Hiperfonética": [
+        97.9,
+        286
+      ],
+      "Normal": [
+        39.9,
+        10868
+      ],
+      "Outro": [
+        87.8,
+        74
+      ],
+      "Única": [
+        97.3,
+        75
+      ]
+    },
+    "SOPRO": {
+      "Ausente": [
+        10.1,
+        7097
+      ],
+      "Contínuo": [
+        79.5,
+        44
+      ],
+      "Diastólico": [
+        100.0,
+        9
+      ],
+      "Sistólico": [
+        95.9,
+        4306
+      ],
+      "Sistólico e diastólico": [
+        100.0,
+        3
+      ]
+    },
+    "HDA 1": {
+      "Assintomático": [
+        46.5,
+        6473
+      ],
+      "Cianose": [
+        55.1,
+        256
+      ],
+      "Desmaio/tontura": [
+        29.2,
+        154
+      ],
+      "Dispneia": [
+        53.1,
+        535
+      ],
+      "Dor precordial": [
+        33.5,
+        505
+      ],
+      "Ganho de peso": [
+        35.6,
+        87
+      ],
+      "Outro": [
+        46.0,
+        124
+      ],
+      "Palpitação": [
+        29.3,
+        362
+      ]
+    },
+    "MOTIVO1": {
+      "Cardiopatia já estabelecida": [
+        71.3,
+        1115
+      ],
+      "Check-up": [
+        26.8,
+        679
+      ],
+      "Outro": [
+        43.3,
+        298
+      ],
+      "Parecer cardiológico": [
+        25.7,
+        5152
+      ],
+      "Suspeita de cardiopatia": [
+        58.8,
+        4085
+      ]
+    },
+    "MOTIVO2": {
+      "Alterações de pulso/perfusão": [
+        40.0,
+        5
+      ],
+      "Atividade física": [
+        25.9,
+        582
+      ],
+      "Cansaço": [
+        66.7,
+        6
+      ],
+      "Cardiopatia adquirida": [
+        53.3,
+        90
+      ],
+      "Cardiopatia congênita": [
+        73.7,
+        1002
+      ],
+      "Cardiopatia na família": [
+        25.8,
+        31
+      ],
+      "Cianose": [
+        40.7,
+        135
+      ],
+      "Cianose e dispnéia": [
+        33.3,
+        3
+      ],
+      "Cirurgia": [
+        23.2,
+        2836
+      ],
+      "Dispnéia": [
+        36.6,
+        213
+      ],
+      "Dor precordial": [
+        29.3,
+        368
+      ],
+      "HAS/dislipidemia/obesidade": [
+        28.4,
+        229
+      ],
+      "Outro": [
+        43.7,
+        775
+      ],
+      "Palpitação/taquicardia/arritmia": [
+        37.5,
+        397
+      ],
+      "Sopro": [
+        76.2,
+        2252
+      ],
+      "Uso de cisaprida": [
+        66.7,
+        9
+      ]
+    },
+    "Convenio": {
+      "CAMED": [
+        31.1,
+        531
+      ],
+      "CC": [
+        71.6,
+        95
+      ],
+      "FUSEX": [
+        39.0,
+        123
+      ],
+      "GRUPO": [
+        48.4,
+        459
+      ],
+      "GS": [
+        42.6,
+        1988
+      ],
+      "IDEAL": [
+        35.7,
+        154
+      ],
+      "MEDIAL": [
+        37.7,
+        350
+      ],
+      "NAO INFORMADO": [
+        45.9,
+        3158
+      ],
+      "NORCLIN": [
+        38.8,
+        152
+      ],
+      "OUTROS": [
+        48.1,
+        1721
+      ],
+      "REAL": [
+        31.4,
+        86
+      ],
+      "REAL S": [
+        35.0,
+        254
+      ],
+      "SA": [
+        32.6,
+        224
+      ],
+      "SB": [
+        31.9,
+        436
+      ],
+      "SEMEPE": [
+        61.0,
+        123
+      ],
+      "SULA": [
+        31.6,
+        114
+      ],
+      "UG": [
+        35.1,
+        114
+      ],
+      "UR": [
+        39.2,
+        1388
+      ]
+    },
+    "PA medida": {
+      "Sim": [
+        36.0,
+        5099
+      ],
+      "Não": [
+        48.0,
+        6371
+      ]
+    }
+  },
+  "idade_imc": {
+    "n_bruto": 7756,
+    "n_limpo": 7073,
+    "rho_bruto": 0.355,
+    "rho_limpo": 0.356,
+    "fora_bruto_pct": 3.9,
+    "imc_mediano_por_idade": {
+      "0": 15.8,
+      "1": 17.3,
+      "2": 16.5,
+      "3": 16.2,
+      "4": 16.1,
+      "5": 16.1,
+      "6": 16.4,
+      "7": 17.1,
+      "8": 17.1,
+      "9": 18.0,
+      "10": 17.9,
+      "11": 18.9,
+      "12": 19.2,
+      "13": 20.2,
+      "14": 20.2,
+      "15": 19.8,
+      "16": 19.8,
+      "17": 20.7,
+      "18": 20.9
+    }
+  },
+  "taxa_base_anormal_pct": 42.7,
+  "transformado": {
+    "shape": [
+      11470,
+      72
+    ],
+    "colunas_limpo": 21,
+    "log1p": [
+      "IMC",
+      "PA SISTOLICA",
+      "FC"
+    ],
+    "assimetria_antes": {
+      "IDADE": 0.76,
+      "IMC": 1.34,
+      "PA SISTOLICA": 1.19,
+      "PA DIASTOLICA": 0.97,
+      "FC": 1.16
+    },
+    "assimetria_depois": {
+      "IDADE": 0.76,
+      "IMC": 0.58,
+      "PA SISTOLICA": 0.65,
+      "PA DIASTOLICA": 0.97,
+      "FC": 0.53
+    },
+    "sintomas": [
+      "Cianose",
+      "Desmaio/tontura",
+      "Dispneia",
+      "Dor precordial",
+      "Ganho de peso",
+      "Outro",
+      "Palpitação"
+    ],
+    "ausentes_restantes": 0
+  }
+}
