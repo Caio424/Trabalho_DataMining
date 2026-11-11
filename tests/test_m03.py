@@ -59,3 +59,24 @@ def test_importancia_usa_colunas_originais(amostra):
     X, y = amostra
     r = validacao_aninhada("logreg", X, y, n_externo=3, n_interno=2, importancia=True)
     assert set(r.importancia["atributo"]) == set(X.columns)
+
+
+def test_estatistica_5x2cv_exemplo_calculado_a_mao():
+    from m03_validacao import estatistica_5x2cv
+    d = np.array([[.02, .01], [.03, .01], [.01, .02], [.02, .02], [.03, .02]])
+    t, p = estatistica_5x2cv(d)
+    assert t == pytest.approx(2.3905, abs=1e-3)
+    assert 0.05 < p < 0.10
+
+
+def test_estatistica_5x2cv_sem_variancia_nao_divide_por_zero():
+    from m03_validacao import estatistica_5x2cv
+    t, p = estatistica_5x2cv(np.zeros((5, 2)))
+    assert t == 0.0 and p == 1.0
+
+
+def test_teste_5x2cv_modelo_contra_si_mesmo(amostra):
+    from m03_validacao import teste_5x2cv
+    X, y = amostra
+    r = teste_5x2cv("logreg", "logreg", X, y, n_interno=2)
+    assert r["t"] == 0.0 and np.allclose(r["diferencas"], 0)

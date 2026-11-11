@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.inspection import permutation_importance
 from sklearn.metrics import (average_precision_score, confusion_matrix, f1_score,
                              precision_score, recall_score, roc_auc_score)
+from scipy import stats
 from sklearn.model_selection import GridSearchCV, StratifiedGroupKFold, StratifiedKFold
 
 from config import RANDOM_STATE
@@ -80,3 +81,36 @@ def validacao_aninhada(nome, X, y, *, estrategia="nenhum", grupos=None, n_extern
             imps.append(pd.DataFrame({"fold": k, "atributo": X.columns, "queda_auc": r.importances_mean}))
     return ResultadoCV(pd.DataFrame(linhas), pd.concat(oof, ignore_index=True), params,
                        pd.concat(imps, ignore_index=True) if importancia else None)
+
+
+def estatistica_5x2cv(diferencas: np.ndarray) -> tuple[float, float]:
+    """Teste t 5x2cv de Dietterich (1998): t = p_1^(1) / sqrt(média das variâncias s_i²)."""
+    d = np.asarray(diferencas, dtype=float)
+    medias = d.mean(axis=1, keepdims=True)
+    variancias = ((d - medias) ** 2).sum(axis=1)
+    denominador = np.sqrt(variancias.mean())
+    if d[0, 0] == 0:
+        return 0.0, 1.0
+    if denominador == 0:
+        return float(np.sign(d[0, 0]) * np.inf), 0.0
+    t = d[0, 0] / denominador
+    return float(t), float(2 * stats.t.sf(abs(t), df=5))
+
+
+def teste_5x2cv(nome_a: str, nome_b: str, X, y, n_interno: int = 3) -> dict:
+    """5 replicações de validação cruzada 2-fold; os dois modelos usam as mesmas partições
+    e cada um ajusta seus hiperparâmetros só no treino de cada partição."""
+    diferencas, erros_a, erros_b = np.zeros((5, 2)), [], []
+    for i in range(5):
+        cv = StratifiedKFold(n_splits=2, shuffle=True, random_state=RANDOM_STATE + i)
+        for j, (tr, te) in enumerate(cv.split(np.zeros(len(y)), y)):
+            erros = []
+            for nome in (nome_a, nome_b):
+                modelo, _ = ajustar(nome, X.iloc[tr], y.iloc[tr], X_ref=X, n_interno=n_interno)
+                erros.append(float(np.mean(modelo.predict(X.iloc[te]) != y.iloc[te].to_numpy())))
+            erros_a.append(erros[0])
+            erros_b.append(erros[1])
+            diferencas[i, j] = erros[0] - erros[1]
+    t, p = estatistica_5x2cv(diferencas)
+    return {"t": t, "p": p, "diferencas": diferencas.tolist(),
+            "erro_a": float(np.mean(erros_a)), "erro_b": float(np.mean(erros_b))}
