@@ -135,4 +135,5 @@ NOMINAIS = ["SEXO", "Convenio", "PULSOS", "B2", "SOPRO", "MOTIVO1", "MOTIVO2"]
 SINTOMAS = ["Cianose", "Desmaio/tontura", "Dispneia", "Dor precordial", "Ganho de peso",
             "Outro", "Palpitação"]
 # valor = colunas excluídas em cada cenário de atributos
-CENARIOS = {"principal": ["SOPRO"], "com_sopro": [], "restrito": ["SOPRO", "MOTIVO1", "MOTIVO2"]}
+CENARIOS = {"principal": ["SOPRO"], "com_sopro": [], "restrito": ["SOPRO", "MOTIVO1", "MOTIVO2"],
+            "sem_b2": ["SOPRO", "B2"]}

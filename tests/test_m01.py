@@ -21,6 +21,7 @@ def test_cenarios_diferem_so_nas_colunas_excluidas():
     p, c, r = (set(carregar_xy(k)[0].columns) for k in ("principal", "com_sopro", "restrito"))
     assert c - p == {"SOPRO"}
     assert p - r == {"MOTIVO1", "MOTIVO2"}
+    assert p - set(carregar_xy("sem_b2")[0].columns) == {"B2"}
 
 
 def test_atributos_derivados():

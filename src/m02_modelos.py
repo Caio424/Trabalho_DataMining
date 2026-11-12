@@ -31,7 +31,8 @@ MODELOS = {
     "rf": (RandomForestClassifier(n_estimators=300, n_jobs=-1, random_state=RANDOM_STATE),
            {"modelo__max_depth": [None, 10, 20], "modelo__min_samples_leaf": [1, 5],
             "modelo__max_features": ["sqrt", 0.3]}),
-    "gb": (HistGradientBoostingClassifier(max_iter=200, random_state=RANDOM_STATE),
+    "gb": (HistGradientBoostingClassifier(max_iter=200, early_stopping=False,
+                                          random_state=RANDOM_STATE),
            {"modelo__learning_rate": [0.05, 0.1], "modelo__max_depth": [3, 6, None],
             "modelo__l2_regularization": [0, 1]}),
 }

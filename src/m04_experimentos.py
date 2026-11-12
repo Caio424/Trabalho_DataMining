@@ -65,8 +65,8 @@ def executar(n_amostra: int | None = None, n_externo: int = 10, n_interno: int =
     melhor = auc.idxmax()
     pares = ["logreg", melhor]
 
-    # 2) cenários de atributos: tamanho do vazamento (com SOPRO) e dependência dos MOTIVOs
-    for cenario in ("com_sopro", "restrito"):
+    # 2) cenários de atributos: tamanho do vazamento (com SOPRO), dependência dos MOTIVOs e da B2
+    for cenario in ("com_sopro", "restrito", "sem_b2"):
         for nome in pares:
             params[cenario][nome] = rodar("cenarios", cenario, nome).params
 

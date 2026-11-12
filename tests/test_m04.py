@@ -16,6 +16,9 @@ def test_execucao_reduzida_gera_todos_os_arquivos(saida_reduzida):
     assert set(m.loc[m["experimento"] == "desbalanceamento", "estrategia"]) == {
         "nenhum", "class_weight", "smote", "subamostragem"}
     assert json.loads((saida_reduzida / "resumo.json").read_text())["melhor_complexo"] in {"arvore", "rf", "gb"}
+    assert set(m.loc[m["experimento"] == "cenarios", "cenario"]) == {"com_sopro", "restrito", "sem_b2"}
+    t5 = json.loads((saida_reduzida / "teste_5x2cv.json").read_text())
+    assert {"t", "p", "f", "p_f"} <= set(t5)
 
 
 def test_execucao_reduzida_e_reprodutivel(saida_reduzida, tmp_path):

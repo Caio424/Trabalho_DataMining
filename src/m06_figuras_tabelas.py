@@ -12,7 +12,7 @@ import pandas as pd
 from matplotlib.colors import LinearSegmentedColormap
 from sklearn.metrics import precision_recall_curve, roc_curve
 
-from config import ARTIGO, COR_ANORMAL, COR_NORMAL, SAIDA_A2, TABELAS, TINTA, TINTA_2
+from config import ARQ_BRUTO, ARTIGO, COR_ANORMAL, COR_NORMAL, SAIDA_A2, TABELAS, TINTA, TINTA_2
 from m01_atributos import carregar_xy
 from m02_modelos import ROTULOS
 
@@ -35,6 +35,10 @@ METRICAS_TAB = [("acuracia", "Acur."), ("acuracia_bal", "Ac. bal."), ("precisao"
                 ("auc_roc", "AUC-ROC"), ("auc_pr", "AUC-PR")]
 ESTRATEGIA_TXT = {"nenhum": "Sem tratamento", "class_weight": "Pesos por classe",
                   "smote": "SMOTE", "subamostragem": "Subamostragem"}
+
+
+def n_bruto() -> int:
+    return len(pd.read_csv(ARQ_BRUTO, usecols=[0]))
 
 
 def num(x, casas: int = 3) -> str:
@@ -148,7 +152,7 @@ def _linha(*celulas) -> str:
 def tabela_dados(destino: Path):
     X, y, _ = carregar_xy("principal")
     linhas = [
-        _linha("Instâncias (bruto $\\rightarrow$ limpo)", "12.873 $\\rightarrow$ " + inteiro(len(y))),
+        _linha("Instâncias (bruto $\\rightarrow$ limpo)", inteiro(n_bruto()) + " $\\rightarrow$ " + inteiro(len(y))),
         _linha("Atributos de entrada (antes da codificação)", inteiro(X.shape[1])),
         _linha("Classe Normal / Anormal", f"{num((1 - y.mean()) * 100, 1)}\\% / {num(y.mean() * 100, 1)}\\%"),
     ]
@@ -190,6 +194,7 @@ def tabela_ablacao(resumo: pd.DataFrame, melhor: str, destino: Path):
     blocos = [
         ("Atributos", [("Com Sopro (vazamento)", dict(experimento="cenarios", cenario="com_sopro")),
                        ("Sem Sopro (principal)", dict(experimento="principal")),
+                       ("Sem Sopro e B2", dict(experimento="cenarios", cenario="sem_b2")),
                        ("Sem Sopro e Motivos", dict(experimento="cenarios", cenario="restrito"))]),
         ("Desbalanceamento", [(ESTRATEGIA_TXT[e], dict(experimento="desbalanceamento", estrategia=e))
                               for e in ESTRATEGIA_TXT]),
@@ -233,6 +238,7 @@ def numeros(origem: Path, resumo: pd.DataFrame, melhor: str, destino: Path):
          "pctAnormal": num(y.mean() * 100, 1), "pctNormal": num((1 - y.mean()) * 100, 1),
          "melhorNome": ROTULOS[melhor],
          "tCincoDois": num(t5["t"], 2), "pCincoDois": num(t5["p"], 3),
+         "fCincoDois": num(t5["f"], 2), "pFCincoDois": num(t5["p_f"], 3), "nBruto": inteiro(n_bruto()),
          "erroLogreg": num(t5["erro_a"] * 100, 1), "erroMelhor": num(t5["erro_b"] * 100, 1)}
     chave = {"logreg": "Logreg", "arvore": "Arvore", "rf": "Rf", "gb": "Gb", "dummy": "Dummy"}
     met = {"auc_roc": "auc", "auc_pr": "aucPr", "recall": "recall", "f1": "fUm",
@@ -244,11 +250,17 @@ def numeros(origem: Path, resumo: pd.DataFrame, melhor: str, destino: Path):
     for mt, prefixo in met.items():
         m[f"{prefixo}Melhor"] = m[f"{prefixo}{chave[melhor]}"]
     m["aucDpMelhor"] = m[f"aucDp{chave[melhor]}"]
+    ranking = (resumo.query("experimento == 'principal' and modelo != 'dummy'")
+               .sort_values("auc_roc_media", ascending=False)["modelo"].tolist())
+    m["segundoNome"] = ROTULOS[ranking[1]]
+    outros = [f"{ROTULOS[n]} ({num(media('auc_roc', experimento='principal', modelo=n))})" for n in ranking[1:]]
+    m["ordemDemais"] = ", ".join(outros[:-1]) + " e " + outros[-1]
     for nome, sufixo in (("logreg", "Logreg"), (melhor, "Melhor")):
-        for cen, rot in (("com_sopro", "ComSopro"), ("restrito", "Restrito")):
+        for cen, rot in (("com_sopro", "ComSopro"), ("restrito", "Restrito"), ("sem_b2", "SemBDois")):
             for mt, prefixo in (("auc_roc", "auc"), ("recall", "recall")):
                 m[f"{prefixo}{rot}{sufixo}"] = num(media(mt, experimento="cenarios", cenario=cen, modelo=nome))
-        for est, rot in (("class_weight", "Pesos"), ("smote", "Smote"), ("subamostragem", "Sub")):
+        for est, rot in (("nenhum", "Nenhum"), ("class_weight", "Pesos"), ("smote", "Smote"),
+                         ("subamostragem", "Sub")):
             for mt, prefixo in (("recall", "recall"), ("especificidade", "espec"), ("f1", "fUm"),
                                 ("auc_roc", "auc")):
                 m[f"{prefixo}{rot}{sufixo}"] = num(media(mt, experimento="desbalanceamento",

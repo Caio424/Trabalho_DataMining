@@ -45,6 +45,11 @@ def test_todos_os_modelos_ajustam_e_grade_e_valida(xy, nome):
     pipe.fit(X.iloc[:1500], y.iloc[:1500])
 
 
+def test_gradient_boosting_sem_parada_antecipada_automatica():
+    # "auto" só liga acima de 10.000 linhas: o laço interno e o ajuste final seriam modelos diferentes
+    assert MODELOS["gb"][0].early_stopping is False
+
+
 def test_cenario_restrito_monta_sem_motivos():
     X, y, _ = carregar_xy("restrito")
     montar_pipeline("logreg", X).fit(X.iloc[:1500], y.iloc[:1500])

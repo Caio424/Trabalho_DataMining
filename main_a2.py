@@ -12,17 +12,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
+import m04_experimentos  # noqa: E402
+import m05_interpretacao  # noqa: E402
+import m06_figuras_tabelas  # noqa: E402
 from config import ARQ_LIMPO  # noqa: E402
 
 if __name__ == "__main__":
     if not ARQ_LIMPO.exists():
         import p02_limpeza
         p02_limpeza.executar()
-    import m04_experimentos
     m04_experimentos.executar()
-    for etapa in ("m05_interpretacao", "m06_figuras_tabelas"):
-        try:
-            modulo = __import__(etapa)
-        except ModuleNotFoundError:
-            continue
-        modulo.executar()
+    m05_interpretacao.executar()
+    m06_figuras_tabelas.executar()

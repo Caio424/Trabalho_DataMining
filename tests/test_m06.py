@@ -35,6 +35,14 @@ def test_tabela_de_modelos_usa_virgula_e_tem_cinco_linhas(artigo):
     assert tex.count("\\\\") >= 6 and "0." not in tex
 
 
+def test_macros_das_correcoes_da_revisao(artigo):
+    tex = (artigo / "numeros.tex").read_text(encoding="utf-8")
+    for nome in ["fCincoDois", "pFCincoDois", "aucSemBDoisLogreg", "aucSemBDoisMelhor",
+                 "recallNenhumMelhor", "especNenhumMelhor", "nBruto", "segundoNome"]:
+        assert "\\newcommand{\\" + nome + "}" in tex, nome
+    assert "Sem Sopro e B2" in (artigo / "tabelas/tab_ablacao.tex").read_text(encoding="utf-8")
+
+
 def test_macros_sem_digitos_no_nome(artigo):
     import re
     nomes = re.findall(r"\\newcommand\{\\([^}]*)\}",(artigo / "numeros.tex").read_text(encoding="utf-8"))

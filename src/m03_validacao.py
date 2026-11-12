@@ -97,6 +97,20 @@ def estatistica_5x2cv(diferencas: np.ndarray) -> tuple[float, float]:
     return float(t), float(2 * stats.t.sf(abs(t), df=5))
 
 
+def estatistica_f_5x2cv(diferencas: np.ndarray) -> tuple[float, float]:
+    """Teste F combinado 5x2cv (Alpaydin, 1999): usa as 10 diferenças, não só a primeira."""
+    d = np.asarray(diferencas, dtype=float)
+    medias = d.mean(axis=1, keepdims=True)
+    denominador = 2 * ((d - medias) ** 2).sum()
+    numerador = (d ** 2).sum()
+    if numerador == 0:
+        return 0.0, 1.0
+    if denominador == 0:
+        return float("inf"), 0.0
+    f = numerador / denominador
+    return float(f), float(stats.f.sf(f, 10, 5))
+
+
 def teste_5x2cv(nome_a: str, nome_b: str, X, y, n_interno: int = 3) -> dict:
     """5 replicações de validação cruzada 2-fold; os dois modelos usam as mesmas partições
     e cada um ajusta seus hiperparâmetros só no treino de cada partição."""
@@ -112,5 +126,6 @@ def teste_5x2cv(nome_a: str, nome_b: str, X, y, n_interno: int = 3) -> dict:
             erros_b.append(erros[1])
             diferencas[i, j] = erros[0] - erros[1]
     t, p = estatistica_5x2cv(diferencas)
-    return {"t": t, "p": p, "diferencas": diferencas.tolist(),
+    f, p_f = estatistica_f_5x2cv(diferencas)
+    return {"t": t, "p": p, "f": f, "p_f": p_f, "diferencas": diferencas.tolist(),
             "erro_a": float(np.mean(erros_a)), "erro_b": float(np.mean(erros_b))}

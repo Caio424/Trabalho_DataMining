@@ -75,8 +75,17 @@ def test_estatistica_5x2cv_sem_variancia_nao_divide_por_zero():
     assert t == 0.0 and p == 1.0
 
 
+def test_f_combinado_5x2cv_exemplo_calculado_a_mao():
+    from m03_validacao import estatistica_f_5x2cv
+    d = np.array([[.02, .01], [.03, .01], [.01, .02], [.02, .02], [.03, .02]])
+    f, p = estatistica_f_5x2cv(d)
+    assert f == pytest.approx(0.0041 / (2 * 0.00035), rel=1e-6)
+    assert 0.01 < p < 0.05
+
+
 def test_teste_5x2cv_modelo_contra_si_mesmo(amostra):
     from m03_validacao import teste_5x2cv
     X, y = amostra
     r = teste_5x2cv("logreg", "logreg", X, y, n_interno=2)
     assert r["t"] == 0.0 and np.allclose(r["diferencas"], 0)
+    assert r["f"] == 0.0 and r["p_f"] == 1.0
