@@ -164,7 +164,8 @@ def tabela_dados(destino: Path):
 
 def tabela_modelos(resumo: pd.DataFrame, destino: Path):
     r = resumo.query("experimento == 'principal'").set_index("modelo").loc[list(ROTULOS)]
-    melhores = {m: r[f"{m}_media"].max() for m, _ in METRICAS_TAB}
+    # o classificador trivial não concorre ao destaque (especificidade 1 por construção)
+    melhores = {m: r.drop(index="dummy")[f"{m}_media"].max() for m, _ in METRICAS_TAB}
     linhas = []
     for nome, row in r.iterrows():
         cel = []
