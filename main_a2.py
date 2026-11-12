@@ -8,6 +8,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+# no Windows, saída redirecionada usa cp1252 e quebra nos "→" das mensagens de progresso
+sys.stdout.reconfigure(encoding="utf-8")
+sys.stderr.reconfigure(encoding="utf-8")
 
 from config import ARQ_LIMPO  # noqa: E402
 
