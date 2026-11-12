@@ -1,6 +1,6 @@
 # Roteiro da apresentação – A2 (15 minutos)
 
-Deck: https://claude.ai/artifact/5vTCpFNtaavknFHSQhuqXp (as notas de cada slide trazem a fala completa).
+Deck: https://claude.ai/artifact/BSbJuaBnh26j7rF7Mxjysc (as notas de cada slide trazem a fala completa).
 
 > **Regra da avaliação:** todos apresentam, e qualquer integrante pode ser chamado para responder qualquer pergunta. Cada um deve ler a seção 3 inteira, não só a sua parte.
 
@@ -47,7 +47,7 @@ Se o tempo apertar, diga só isto:
 | Pergunta | Resposta |
 |---|---|
 | Por que o Sopro é vazamento? | É um achado do exame físico feito pelo cardiologista na mesma consulta que dá o diagnóstico. Na triagem, antes da consulta, ele não existe. Com ele, a AUC iria de 0,80 para 0,95: esse ganho é emprestado do diagnóstico. |
-| A B2 também não é achado de exame? | É, e está declarada como limitação. A associação dela com o alvo é muito menor (V = 0,24 contra 0,84 do Sopro). Um trabalho futuro é testar o modelo sem B2. |
+| A B2 também não é achado de exame? | É, por isso medimos: sem a B2, a AUC da Random Forest vai de 0,802 para 0,788, uma perda pequena. A associação dela com o alvo é muito menor que a do Sopro (V = 0,24 contra 0,84). Para triagem estritamente antes da consulta, recomendamos o modelo sem B2. |
 | Os Motivos de encaminhamento não vazam? | Eles são informação **anterior** à consulta: o que o médico que encaminhou suspeitou. São legítimos para triagem. Medimos a dependência: sem eles, a AUC cai para 0,72. |
 | Por que não usaram o UCMF_transformed.csv da A1? | Porque a mediana, a média e o desvio dele foram calculados na base inteira. Usar esse arquivo na validação seria vazamento. A A2 parte do arquivo limpo e refaz tudo dentro do pipeline. |
 | E os pacientes repetidos? | Não há identificador de paciente. Agrupamos por data de nascimento + sexo e repetimos a validação com partição agrupada: a AUC ficou igual (0,801). Não há sinal de vazamento por repetição. |
@@ -68,8 +68,8 @@ Se o tempo apertar, diga só isto:
 
 | Pergunta | Resposta |
 |---|---|
-| Qual o melhor modelo? | Random Forest, AUC 0,802 ± 0,015. O Gradient Boosting fica praticamente empatado (0,800). |
-| A diferença é significativa? | Sim. Pelo teste t 5×2cv de Dietterich, t = 3,44 e p = 0,018 < 0,05. Mas o efeito é pequeno: o erro vai de 26,3% para 25,6%. |
+| Qual o melhor modelo? | Random Forest, AUC 0,802 ± 0,015. O Gradient Boosting fica praticamente empatado (0,801). |
+| A diferença é significativa? | Sim. Pelo teste t 5×2cv de Dietterich, t = 3,44 e p = 0,018 < 0,05; o teste F combinado de Alpaydin, que usa as 10 execuções, confirma (F = 5,58, p = 0,036). Mas o efeito é pequeno: o erro vai de 26,3% para 25,6%. |
 | Por que 5×2cv e não teste t nos 10 folds? | Os folds compartilham dados de treino, o que subestima a variância e infla o erro tipo I. O 5×2cv foi proposto por Dietterich justamente para isso. |
 | Então vale usar a Random Forest? | Se a prioridade é desempenho, sim. Se é interpretabilidade, a Regressão Logística é quase equivalente e mostra o sentido de cada atributo (razão de chances). |
 | Por que o recall é só 0,59? | Porque o limiar padrão é 0,5. Baixando para 0,3, o recall vai a 0,83. O modelo ordena bem (AUC 0,80); o corte é que precisa ser escolhido pela clínica. |

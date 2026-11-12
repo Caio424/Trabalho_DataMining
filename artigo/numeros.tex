@@ -6,6 +6,9 @@
 \newcommand{\melhorNome}{Random Forest}
 \newcommand{\tCincoDois}{3,44}
 \newcommand{\pCincoDois}{0,018}
+\newcommand{\fCincoDois}{5,58}
+\newcommand{\pFCincoDois}{0,036}
+\newcommand{\nBruto}{12.873}
 \newcommand{\erroLogreg}{26,3}
 \newcommand{\erroMelhor}{25,6}
 \newcommand{\aucDummy}{0,500}
@@ -44,14 +47,14 @@
 \newcommand{\especRf}{0,862}
 \newcommand{\precRf}{0,761}
 \newcommand{\aucDpRf}{0,015}
-\newcommand{\aucGb}{0,800}
-\newcommand{\aucPrGb}{0,769}
-\newcommand{\recallGb}{0,578}
-\newcommand{\fUmGb}{0,659}
-\newcommand{\acBalGb}{0,724}
+\newcommand{\aucGb}{0,801}
+\newcommand{\aucPrGb}{0,771}
+\newcommand{\recallGb}{0,592}
+\newcommand{\fUmGb}{0,665}
+\newcommand{\acBalGb}{0,726}
 \newcommand{\acurGb}{0,745}
-\newcommand{\especGb}{0,869}
-\newcommand{\precGb}{0,767}
+\newcommand{\especGb}{0,859}
+\newcommand{\precGb}{0,758}
 \newcommand{\aucDpGb}{0,015}
 \newcommand{\aucMelhor}{0,802}
 \newcommand{\aucPrMelhor}{0,770}
@@ -62,10 +65,18 @@
 \newcommand{\especMelhor}{0,862}
 \newcommand{\precMelhor}{0,761}
 \newcommand{\aucDpMelhor}{0,015}
+\newcommand{\segundoNome}{Gradient Boosting}
+\newcommand{\ordemDemais}{Gradient Boosting (0,801), Regressão Logística (0,787) e Árvore de Decisão (0,774)}
 \newcommand{\aucComSoproLogreg}{0,945}
 \newcommand{\recallComSoproLogreg}{0,871}
 \newcommand{\aucRestritoLogreg}{0,697}
 \newcommand{\recallRestritoLogreg}{0,412}
+\newcommand{\aucSemBDoisLogreg}{0,772}
+\newcommand{\recallSemBDoisLogreg}{0,572}
+\newcommand{\recallNenhumLogreg}{0,587}
+\newcommand{\especNenhumLogreg}{0,850}
+\newcommand{\fUmNenhumLogreg}{0,656}
+\newcommand{\aucNenhumLogreg}{0,787}
 \newcommand{\recallPesosLogreg}{0,638}
 \newcommand{\especPesosLogreg}{0,811}
 \newcommand{\fUmPesosLogreg}{0,674}
@@ -88,6 +99,12 @@
 \newcommand{\recallComSoproMelhor}{0,875}
 \newcommand{\aucRestritoMelhor}{0,722}
 \newcommand{\recallRestritoMelhor}{0,450}
+\newcommand{\aucSemBDoisMelhor}{0,788}
+\newcommand{\recallSemBDoisMelhor}{0,575}
+\newcommand{\recallNenhumMelhor}{0,591}
+\newcommand{\especNenhumMelhor}{0,861}
+\newcommand{\fUmNenhumMelhor}{0,665}
+\newcommand{\aucNenhumMelhor}{0,802}
 \newcommand{\recallPesosMelhor}{0,642}
 \newcommand{\especPesosMelhor}{0,821}
 \newcommand{\fUmPesosMelhor}{0,682}
@@ -159,8 +176,9 @@
 \newcommand{\rcBDoisHiper}{2,79}
 \newcommand{\rcHdaAusente}{0,48}
 \newcommand{\ganhoSopro}{0,15}
+\newcommand{\pctSinalSemMotivos}{74}
 \newcommand{\pctAusentePa}{55,5}
 \newcommand{\pctAusentePpa}{81,9}
-\newcommand{\tempoMin}{49}
+\newcommand{\tempoMin}{48}
 \newcommand{\cLogreg}{0,1}
 \newcommand{\paramsMelhor}{max\_depth = None, max\_features = sqrt, min\_samples\_leaf = 5}

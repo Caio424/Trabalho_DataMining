@@ -414,5 +414,103 @@
         "modelo__min_samples_leaf": 5
       }
     }
+  },
+  "sem_b2": {
+    "logreg": {
+      "por_fold": [
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        }
+      ],
+      "moda": {
+        "modelo__C": 0.1
+      }
+    },
+    "rf": {
+      "por_fold": [
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        }
+      ],
+      "moda": {
+        "modelo__max_depth": 20,
+        "modelo__max_features": "sqrt",
+        "modelo__min_samples_leaf": 5
+      }
+    }
   }
 }

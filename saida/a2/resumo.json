@@ -4,7 +4,7 @@
   "n_instancias": 11470,
   "n_externo": 10,
   "n_interno": 5,
-  "tempo_s": 2913,
+  "tempo_s": 2875,
   "python": "3.13.2",
   "versoes": {
     "pandas": "2.2.3",
