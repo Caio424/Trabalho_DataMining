@@ -1,0 +1,418 @@
+{
+  "principal": {
+    "dummy": {
+      "por_fold": [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ],
+      "moda": {}
+    },
+    "logreg": {
+      "por_fold": [
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 1
+        },
+        {
+          "modelo__C": 0.1
+        }
+      ],
+      "moda": {
+        "modelo__C": 0.1
+      }
+    },
+    "arvore": {
+      "por_fold": [
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 7,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__min_samples_leaf": 50
+        }
+      ],
+      "moda": {
+        "modelo__max_depth": 10,
+        "modelo__min_samples_leaf": 50
+      }
+    },
+    "rf": {
+      "por_fold": [
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        }
+      ],
+      "moda": {
+        "modelo__max_depth": null,
+        "modelo__max_features": "sqrt",
+        "modelo__min_samples_leaf": 5
+      }
+    },
+    "gb": {
+      "por_fold": [
+        {
+          "modelo__l2_regularization": 0,
+          "modelo__learning_rate": 0.1,
+          "modelo__max_depth": 3
+        },
+        {
+          "modelo__l2_regularization": 1,
+          "modelo__learning_rate": 0.05,
+          "modelo__max_depth": null
+        },
+        {
+          "modelo__l2_regularization": 0,
+          "modelo__learning_rate": 0.1,
+          "modelo__max_depth": 3
+        },
+        {
+          "modelo__l2_regularization": 1,
+          "modelo__learning_rate": 0.05,
+          "modelo__max_depth": 6
+        },
+        {
+          "modelo__l2_regularization": 1,
+          "modelo__learning_rate": 0.05,
+          "modelo__max_depth": null
+        },
+        {
+          "modelo__l2_regularization": 1,
+          "modelo__learning_rate": 0.1,
+          "modelo__max_depth": 3
+        },
+        {
+          "modelo__l2_regularization": 1,
+          "modelo__learning_rate": 0.1,
+          "modelo__max_depth": 3
+        },
+        {
+          "modelo__l2_regularization": 0,
+          "modelo__learning_rate": 0.1,
+          "modelo__max_depth": 3
+        },
+        {
+          "modelo__l2_regularization": 1,
+          "modelo__learning_rate": 0.1,
+          "modelo__max_depth": 3
+        },
+        {
+          "modelo__l2_regularization": 1,
+          "modelo__learning_rate": 0.05,
+          "modelo__max_depth": 6
+        }
+      ],
+      "moda": {
+        "modelo__l2_regularization": 0,
+        "modelo__learning_rate": 0.1,
+        "modelo__max_depth": 3
+      }
+    }
+  },
+  "com_sopro": {
+    "logreg": {
+      "por_fold": [
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 1
+        },
+        {
+          "modelo__C": 0.1
+        }
+      ],
+      "moda": {
+        "modelo__C": 0.1
+      }
+    },
+    "rf": {
+      "por_fold": [
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 1
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 1
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 1
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 10,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": null,
+          "modelo__max_features": 0.3,
+          "modelo__min_samples_leaf": 5
+        }
+      ],
+      "moda": {
+        "modelo__max_depth": 20,
+        "modelo__max_features": 0.3,
+        "modelo__min_samples_leaf": 5
+      }
+    }
+  },
+  "restrito": {
+    "logreg": {
+      "por_fold": [
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 0.1
+        },
+        {
+          "modelo__C": 1
+        },
+        {
+          "modelo__C": 0.1
+        }
+      ],
+      "moda": {
+        "modelo__C": 0.1
+      }
+    },
+    "rf": {
+      "por_fold": [
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        },
+        {
+          "modelo__max_depth": 20,
+          "modelo__max_features": "sqrt",
+          "modelo__min_samples_leaf": 5
+        }
+      ],
+      "moda": {
+        "modelo__max_depth": 20,
+        "modelo__max_features": "sqrt",
+        "modelo__min_samples_leaf": 5
+      }
+    }
+  }
+}

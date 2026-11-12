@@ -1,0 +1,16 @@
+{
+  "melhor_complexo": "rf",
+  "random_state": 42,
+  "n_instancias": 11470,
+  "n_externo": 10,
+  "n_interno": 5,
+  "tempo_s": 2913,
+  "python": "3.13.2",
+  "versoes": {
+    "pandas": "2.2.3",
+    "numpy": "2.2.4",
+    "scikit-learn": "1.6.1",
+    "imbalanced-learn": "0.14.2",
+    "scipy": "1.16.1"
+  }
+}
