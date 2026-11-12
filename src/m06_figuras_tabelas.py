@@ -268,6 +268,35 @@ def numeros(origem: Path, resumo: pd.DataFrame, melhor: str, destino: Path):
     for i, rot in enumerate(("Um", "Dois", "Tres", "Quatro", "Cinco")):
         m[f"imp{rot}"] = NOMES.get(imp["atributo"].iloc[i], imp["atributo"].iloc[i])
         m[f"impValor{rot}"] = num(imp["queda_auc_media"].iloc[i])
+    c = conf.loc[melhor]
+    m["pctFnMelhor"] = num(c["fn"] / (c["fn"] + c["vp"]) * 100, 1)
+    m["reducaoFnTrinta"] = num((1 - lim.loc[0.3, "fn"] / lim.loc[0.5, "fn"]) * 100, 0)
+    perfil = pd.read_csv(origem / "perfil_erros.csv").set_index("grupo")
+    for g in ("VP", "FN", "FP", "VN"):
+        rot = g.capitalize()
+        m[f"idade{rot}"] = num(perfil.loc[g, "idade_mediana"], 1)
+        m[f"fc{rot}"] = num(perfil.loc[g, "fc_mediana"], 0)
+        m[f"parecer{rot}"] = num(perfil.loc[g, "motivo1_parecer_cardiologico_pct"], 0)
+        m[f"suspeita{rot}"] = num(perfil.loc[g, "motivo1_suspeita_de_cardiopatia_pct"], 0)
+    Xs, ys, _ = carregar_xy("com_sopro")
+    por_sopro = ys.groupby(Xs["SOPRO"]).mean() * 100
+    m["soproSistolico"] = num(por_sopro["Sistólico"], 1)
+    m["soproAusente"] = num(por_sopro["Ausente"], 1)
+    assoc = pd.read_csv(TABELAS / "tab_associacao_alvo.csv").set_index("Variável")["Efeito"].abs()
+    m["vSopro"] = num(assoc["SOPRO"], 2)
+    m["vBDois"] = num(assoc["B2"], 2)
+    m["vMotivoDois"] = num(assoc["MOTIVO2"], 2)
+    rc = pd.read_csv(origem / "razao_chances.csv").set_index("termo")["razao_chances"]
+    for termo, rot in (("B2_Normal", "BDoisNormal"), ("MOTIVO2_Sopro", "MotivoSopro"),
+                       ("B2_Hiperfonética", "BDoisHiper"), ("hda_ausente", "HdaAusente")):
+        if termo in rc:
+            m[f"rc{rot}"] = num(rc[termo], 2)
+    m["ganhoSopro"] = num(media("auc_roc", experimento="cenarios", cenario="com_sopro", modelo=melhor)
+                          - media("auc_roc", experimento="principal", modelo=melhor), 2)
+    m["pctAusentePa"] = num(X["PA SISTOLICA"].isna().mean() * 100, 1)
+    m["pctAusentePpa"] = num(X["ppa_ausente"].mean() * 100, 1)
+    resumo_exec = json.loads((origem / "resumo.json").read_text(encoding="utf-8"))
+    m["tempoMin"] = num(resumo_exec["tempo_s"] / 60, 0)
     m["cLogreg"] = num(params["principal"]["logreg"]["moda"]["modelo__C"], 2).rstrip("0").rstrip(",")
     m["paramsMelhor"] = ", ".join(
         f"{k.removeprefix('modelo__').replace('_', chr(92) + '_')} = "

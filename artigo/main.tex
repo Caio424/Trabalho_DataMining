@@ -1,0 +1,146 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{cite}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\input{numeros}
+\renewcommand{\IEEEkeywordsname}{Palavras-chave}
+
+% ---------------------------------------------------------------- preencher antes da entrega
+\newcommand{\repositorio}{\url{https://github.com/USUARIO/REPOSITORIO}}
+\newcommand{\autores}{Integrante~1, Integrante~2, Integrante~3, Integrante~4}
+\newcommand{\afiliacao}{Mineração de Dados -- Grupo~N\\Instituição}
+% ---------------------------------------------------------------------------------------------
+
+\begin{document}
+
+\title{Triagem de Patologia Cardíaca Pediátrica com Dados de Encaminhamento: Comparação de Classificadores e Controle de Vazamento de Dados%
+\thanks{Código, resultados e instruções de reprodução (\texttt{random\_state} = 42): \repositorio.}}
+
+\author{\IEEEauthorblockN{\autores}
+\IEEEauthorblockA{\afiliacao}}
+
+\maketitle
+
+\begin{abstract}
+Este trabalho investiga a triagem automática de patologia cardíaca em crianças e adolescentes (0 a 19 anos) a partir dos dados de encaminhamento a um serviço de cardiologia pediátrica. Sobre o conjunto UCMF, com \nInstancias{} pacientes após a limpeza, formulamos uma tarefa de classificação binária (Normal $\times$ Anormal) e excluímos o atributo Sopro, que caracteriza vazamento de dados. Comparamos um baseline de Regressão Logística com Árvore de Decisão, Random Forest e Gradient Boosting, em validação cruzada aninhada estratificada, com todo o pré-processamento ajustado apenas no treino. A Random Forest obteve AUC-ROC de \aucMelhor{}, contra \aucLogreg{} do baseline: diferença pequena, mas significativa pelo teste t 5$\times$2cv ($p$~=~\pCincoDois). Com o Sopro, a AUC chegaria a \aucComSoproMelhor{}, o que confirma o vazamento. Os motivos de encaminhamento concentram a maior parte do sinal, e o modelo não detecta \pctFnMelhor\% dos casos anormais no limiar padrão.
+\end{abstract}
+
+\begin{IEEEkeywords}
+classificação, cardiologia pediátrica, vazamento de dados, validação cruzada aninhada, Random Forest
+\end{IEEEkeywords}
+
+% =============================================================================================
+\section{Introdução}
+
+Grande parte das crianças encaminhadas a um ambulatório de cardiologia pediátrica não tem doença cardíaca: os encaminhamentos por sopro inocente, pareceres pré-operatórios e check-ups ocupam a agenda de especialistas escassos. Uma ferramenta que estime, \emph{antes} da consulta, a probabilidade de patologia ajudaria a priorizar quem deve ser atendido primeiro.
+
+O objetivo deste trabalho é uma tarefa de \textbf{classificação binária}: prever se o paciente terá diagnóstico \emph{Normal} ou \emph{Anormal} a partir de dados demográficos, antropométricos, sinais vitais, histórico e motivos de encaminhamento. Como a classe de interesse é a Anormal, o erro mais grave é o falso negativo: uma criança doente classificada como saudável.
+
+A contribuição é metodológica e prática: (i) identificamos e medimos o vazamento de dados causado pelo atributo Sopro; (ii) avaliamos quatro classificadores com um protocolo sem vazamento (validação aninhada e pré-processamento dentro do pipeline), com teste estatístico de comparação; e (iii) interpretamos os erros e os atributos mais relevantes no contexto clínico.
+
+% =============================================================================================
+\section{Dados e Análise Exploratória}
+
+O conjunto UCMF, fornecido no estudo de caso da disciplina, reúne atendimentos de cardiologia pediátrica, concentrados entre 2003 e 2010, de pacientes de 0 a 19 anos. Após a limpeza descrita na Seção~\ref{sec:metodologia}, restaram \nInstancias{} instâncias e \nAtributos{} atributos de entrada (Tabela~\ref{tab:dados}). A variável-alvo indica ausência ou presença de patologia cardíaca, com desbalanceamento leve: \pctNormal\% Normal e \pctAnormal\% Anormal.
+
+\begin{table}[!t]
+\caption{Características do conjunto após a limpeza}
+\label{tab:dados}
+\centering\footnotesize
+\input{tabelas/tab_dados}
+\end{table}
+
+As ausências são o principal problema de qualidade. A pressão arterial falta em \pctAusentePa\% dos registros, e a classificação de hipertensão (PPA) em \pctAusentePpa\%, porque a planilha de origem registrava erro de fórmula ou ``Não Calculado''. A ausência não é aleatória: a pressão raramente é medida em lactentes. Por isso, em vez de descartar as variáveis, mantivemos indicadores de ausência.
+
+\textbf{Vazamento de dados.} A análise bivariada da etapa anterior (A1) mostrou que o Sopro tem associação muito acima dos demais atributos com o alvo (V de Cramér de \vSopro{}, contra \vMotivoDois{} do segundo colocado; Fig.~\ref{fig:leakage}). Entre os pacientes com sopro sistólico, \soproSistolico\% são Anormais; sem sopro, apenas \soproAusente\%. O Sopro é um achado do exame físico feito pelo próprio cardiologista, na mesma consulta que define o diagnóstico. Um modelo que o usa estaria ``lendo'' a conclusão do médico, e não fazendo triagem antes da consulta, o que caracteriza vazamento de dados~\cite{kaufman2012}. O atributo foi \textbf{excluído} da análise principal; mantivemos um cenário com ele apenas para medir o tamanho do efeito.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figuras/fig1_leakage.pdf}
+\caption{Evidência de vazamento. (a) Proporção de Anormais por tipo de sopro; a linha tracejada é a proporção geral. (b) Associação de cada atributo com o alvo na análise bivariada da A1; o Sopro destoa de todos os demais.}
+\label{fig:leakage}
+\end{figure}
+
+% =============================================================================================
+\section{Metodologia}
+\label{sec:metodologia}
+
+\textbf{Limpeza.} Partimos do arquivo bruto (12.873 registros) e aplicamos as 34 regras da A1: remoção de duplicatas e de registros sem rótulo, recálculo da idade a partir das datas e do IMC a partir de peso e altura, e anulação de valores fisiologicamente impossíveis segundo faixas amplas de plausibilidade baseadas na OMS~\cite{oms2006}, em Fleming~\textit{et~al.}~\cite{fleming2011} e em Flynn~\textit{et~al.}~\cite{flynn2017}. Nenhum valor é imputado nessa etapa.
+
+\textbf{Atributos e transformações.} Usamos idade, IMC, pressão sistólica e diastólica, frequência cardíaca (FC), sexo, convênio, pulsos, segunda bulha (B2), os dois motivos de encaminhamento, a PPA ordinal e sete indicadores de sintoma derivados do histórico (HDA). Identificador, datas, peso e altura foram removidos, pois a informação está na idade e no IMC. Todas as transformações que aprendem com os dados ficam dentro de um \emph{pipeline} e são reajustadas em cada partição de treino: logaritmo nas variáveis assimétricas (IMC, PAS, FC), imputação pela mediana com indicador de ausência, padronização (z-score) e codificação one-hot, com categorias raras ($n<30$) agrupadas. Assim, nenhuma estatística do conjunto de teste participa do ajuste.
+
+\textbf{Protocolo de validação.} Com \nInstancias{} instâncias, seguimos a recomendação de validação cruzada estratificada em 10 partições~\cite{kohavi1995}, na forma \emph{aninhada}: em cada partição externa, uma validação interna estratificada de 5 partições escolhe os hiperparâmetros por busca em grade (critério AUC-ROC), e o modelo final é avaliado na partição externa, nunca vista. Cada instância é avaliada exatamente uma vez. Como a base não tem identificador de paciente, repetimos a avaliação com partição agrupada por data de nascimento e sexo, para verificar se possíveis retornos do mesmo paciente vazavam entre treino e teste.
+
+\textbf{Métricas.} Relatamos média e desvio-padrão, nos 10 folds, de acurácia, acurácia balanceada, precisão, recall (sensibilidade), especificidade, F1, AUC-ROC e AUC-PR. Para triagem, o recall da classe Anormal é a métrica mais importante; a AUC-ROC mede a capacidade de ordenar pacientes por risco independentemente do limiar.
+
+\textbf{Algoritmos.} A Regressão Logística é o baseline simples (C $\in \{0{,}01; 0{,}1; 1; 10\}$). Os modelos complexos são a Árvore de Decisão (profundidade e tamanho mínimo da folha), a Random Forest~\cite{breiman2001} (300 árvores; profundidade, tamanho da folha e fração de atributos) e o Gradient Boosting baseado em histogramas~\cite{friedman2001,ke2017} (taxa de aprendizado, profundidade e regularização L2). Uma classe majoritária serve de piso de referência. Implementação em scikit-learn~\cite{pedregosa2011} e imbalanced-learn~\cite{lemaitre2017}.
+
+\textbf{Desbalanceamento.} Para o baseline e o melhor modelo complexo, comparamos sem tratamento, pesos por classe, SMOTE~\cite{chawla2002} e subamostragem aleatória. A reamostragem ocorre somente no treino, dentro do pipeline. Também analisamos o efeito do limiar de decisão.
+
+\textbf{Comparação estatística.} Comparamos o baseline e o melhor modelo complexo com o teste t 5$\times$2cv de Dietterich~\cite{dietterich1998}, sobre a taxa de erro, com $\alpha = 0{,}05$ e 5 graus de liberdade; em cada uma das 10 execuções, os hiperparâmetros são reajustados no treino. A importância dos atributos foi medida por permutação nos folds de teste (queda da AUC-ROC), sobre as colunas originais. O experimento completo levou cerca de \tempoMin{} minutos.
+
+% =============================================================================================
+\section{Resultados e Discussão}
+
+\begin{table*}[!t]
+\caption{Desempenho na validação cruzada aninhada (média e desvio-padrão em 10 folds; cenário sem Sopro; limiar 0,5). Em negrito, o melhor valor entre os modelos treinados}
+\label{tab:modelos}
+\centering\footnotesize
+\input{tabelas/tab_modelos}
+\end{table*}
+
+\textbf{Comparação dos modelos.} A Tabela~\ref{tab:modelos} e a Fig.~\ref{fig:curvas} mostram que todos os modelos superam com folga o piso da classe majoritária, mas ficam próximos entre si. A Random Forest obteve a maior AUC-ROC (\aucMelhor{} $\pm$ \aucDpMelhor), seguida de perto pelo Gradient Boosting (\aucGb), pela Regressão Logística (\aucLogreg) e pela Árvore de Decisão (\aucArvore). As curvas ROC e Precisão--Recall praticamente se sobrepõem. O teste t 5$\times$2cv indica que a vantagem da Random Forest sobre o baseline é estatisticamente significativa ($t$~=~\tCincoDois, $p$~=~\pCincoDois), mas o tamanho do efeito é modesto: a taxa de erro cai de \erroLogreg\% para \erroMelhor\%. Em outras palavras, o ganho é consistente entre partições, porém pequeno; a Regressão Logística, mais simples e interpretável, é uma alternativa quase equivalente. Os hiperparâmetros mais escolhidos foram C = \cLogreg{} na Regressão Logística e \paramsMelhor{} na Random Forest. Os desvios-padrão baixos indicam estimativas estáveis entre as partições.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.82\textwidth]{figuras/fig2_curvas.pdf}
+\caption{Curvas ROC e Precisão--Recall com as previsões fora da amostra dos 10 folds externos (cenário sem Sopro). A linha pontilhada indica o desempenho ao acaso.}
+\label{fig:curvas}
+\end{figure*}
+
+\textbf{Tamanho do vazamento e dependência dos motivos.} A Tabela~\ref{tab:ablacao} mostra que, com o Sopro, a AUC subiria para \aucComSoproLogreg{} (Regressão Logística) e \aucComSoproMelhor{} (Random Forest), e o recall para cerca de \recallComSoproMelhor. Esse salto de \ganhoSopro{} na AUC é o desempenho ``emprestado'' do diagnóstico médico, que não estaria disponível no momento da triagem. No sentido oposto, ao remover também os dois motivos de encaminhamento, a AUC cai para \aucRestritoLogreg{} e \aucRestritoMelhor{}. Ou seja, a maior parte do sinal disponível antes da consulta vem da suspeita clínica de quem encaminhou o paciente, e não das medidas objetivas.
+
+\begin{table}[!t]
+\caption{Análise de ablação: atributos, desbalanceamento e validação agrupada (médias em 10 folds)}
+\label{tab:ablacao}
+\centering\scriptsize\setlength{\tabcolsep}{3.5pt}
+\input{tabelas/tab_ablacao}
+\end{table}
+
+\textbf{Desbalanceamento e limiar.} Como o desbalanceamento é leve, nenhuma estratégia altera a AUC: a ordenação dos pacientes por risco é a mesma. O que muda é o ponto de corte efetivo. Na Random Forest, os pesos por classe elevam o recall de \recallMelhor{} para \recallPesosMelhor{} e a subamostragem para \recallSubMelhor{}, com queda da especificidade para \especPesosMelhor{} e \especSubMelhor{}. O ajuste direto do limiar é mais controlável: nas previsões fora da amostra, baixar o limiar de 0,5 para 0,3 reduz os doentes não detectados de \fnLimiarCinquenta{} para \fnLimiarTrinta{} (\reducaoFnTrinta\% a menos, recall \recallLimiarTrinta), ao custo de aumentar os falsos alarmes de \fpLimiarCinquenta{} para \fpLimiarTrinta{} (precisão \precLimiarTrinta). Em triagem, em que o falso negativo é o erro caro, um limiar mais baixo é preferível. A escolha exata, porém, é uma decisão clínica sobre a capacidade de atendimento, e não um parâmetro estatístico.
+
+\textbf{Pacientes repetidos.} Com a partição agrupada, a AUC foi \aucAgrupadoLogreg{} e \aucAgrupadoMelhor{}, igual à da partição comum (Tabela~\ref{tab:ablacao}). Não há indício de vazamento por retorno do mesmo paciente.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.92\textwidth]{figuras/fig3_erros_importancia.pdf}
+\caption{Random Forest no cenário sem Sopro. (a) Matriz de confusão das previsões fora da amostra, com o percentual em relação à classe real. (b) Queda média da AUC-ROC quando cada atributo é embaralhado no fold de teste; as barras indicam o desvio-padrão entre os folds.}
+\label{fig:erros}
+\end{figure*}
+
+\textbf{Análise dos erros.} No limiar padrão, a Random Forest classifica corretamente \vnMelhor{} Normais e \vpMelhor{} Anormais, mas deixa passar \fnMelhor{} pacientes doentes (\pctFnMelhor\% dos Anormais; Fig.~\ref{fig:erros}a). O perfil desses erros é revelador. Os verdadeiros positivos são, em geral, lactentes (idade mediana de \idadeVp{} ano), encaminhados por suspeita de cardiopatia (\suspeitaVp\%). Os falsos negativos são crianças mais velhas (mediana de \idadeFn{} anos), encaminhadas majoritariamente para parecer cardiológico (\parecerFn\%), um perfil indistinguível do dos verdadeiros negativos (\idadeVn{} anos; \parecerVn\% de parecer). Os falsos positivos são o espelho: lactentes com suspeita que se revelaram normais. O modelo aprendeu, portanto, o padrão ``bebê com suspeita'', e falha nos casos em que a doença aparece num encaminhamento de rotina.
+
+\textbf{Atributos relevantes.} Pela importância por permutação (Fig.~\ref{fig:erros}b), os atributos mais relevantes são \impUm, \impDois, \impTres{} e \impQuatro. Os coeficientes da Regressão Logística confirmam o sentido clínico: o encaminhamento por sopro multiplica a chance de patologia por \rcMotivoSopro, a B2 hiperfonética por \rcBDoisHiper, e uma B2 normal a reduz (razão de chances \rcBDoisNormal). A FC mais alta nos Anormais (mediana de \fcVp{} contra \fcVn{} bpm) é coerente com a maior proporção de lactentes e com a repercussão hemodinâmica das cardiopatias. A B2, assim como o Sopro, é um achado de ausculta. Com associação bem menor (V de \vBDois{}), ela foi mantida, mas parte do desempenho pode depender dela, o que discutimos como limitação.
+
+% =============================================================================================
+\section{Conclusão}
+
+Formulamos a triagem de patologia cardíaca pediátrica como classificação binária e mostramos que, sem o atributo de vazamento, os dados de encaminhamento permitem discriminar moderadamente os pacientes (AUC-ROC de \aucMelhor{} com Random Forest). O ganho sobre a Regressão Logística é significativo, mas pequeno. Com ajuste do limiar, o modelo pode servir como apoio à priorização de agenda, mas não como substituto da avaliação clínica: mesmo com limiar reduzido, uma fração relevante dos doentes não é detectada.
+
+As principais \textbf{limitações} são: (i) dados de um único serviço, concentrados entre 2003 e 2010, o que limita a generalização; (ii) a pressão arterial e a PPA têm muitas ausências; (iii) a B2 e os motivos de encaminhamento são informações próximas do julgamento clínico; (iv) não há identificador real de paciente, e o agrupamento por data de nascimento e sexo é uma aproximação. Como \textbf{trabalhos futuros}, sugerimos validar o modelo em dados de outro período ou serviço, calibrar as probabilidades e definir o limiar com a equipe clínica a partir do custo de cada erro, e avaliar modelos sem a B2 para uma triagem estritamente pré-consulta.
+
+\section*{Declaração de uso de IA generativa}
+O assistente Claude (Anthropic), por meio da ferramenta Claude Code, foi usado para apoiar a implementação do código em Python (pipeline, experimentos, testes e figuras), organizar o protocolo experimental a partir do material da disciplina e redigir uma primeira versão deste texto. Os integrantes revisaram o código, conferiram os resultados e são responsáveis pelo conteúdo final.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}
