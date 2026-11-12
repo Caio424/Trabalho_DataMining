@@ -1,5 +1,7 @@
 # Triagem de patologia cardíaca pediátrica (UCMF)
 
+**Grupo 10 – UFG:** Caio Moreira Bovo, Pedro Henrique Santana, Rafael Alencar Delfino, Yuri Resende Camargo.
+
 Trabalho da disciplina de Mineração de Dados. Classificação binária **Normal × Anormal** (presença de patologia cardíaca) a partir dos dados de encaminhamento de 11.470 crianças e adolescentes (0–19 anos) a um serviço de cardiologia pediátrica.
 
 - **A1:** pré-processamento (limpeza e transformação) → `main.py`, `src/p01`–`p05`
@@ -20,7 +22,8 @@ Requisitos: Python 3.13 e as versões fixadas em `requirements.txt`.
 
 ```bash
 pip install -r requirements.txt
-# coloque o arquivo de dados UCMF_raw.csv na raiz do projeto
+# os dados NÃO são distribuídos neste repositório: coloque o UCMF_raw.csv
+# (fornecido na disciplina) na raiz do projeto antes de rodar
 python main_a2.py     # A2: limpeza (se faltar o CSV limpo), experimentos, figuras e tabelas (~50 min)
 python main.py        # opcional, A1 completa: também gera o relatório .docx (usa o Word via COM)
 python -m pytest      # testes (~15 min; incluem uma execução reduzida dos experimentos)

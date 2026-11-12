@@ -8,21 +8,20 @@ Deck: https://claude.ai/artifact/5vTCpFNtaavknFHSQhuqXp (as notas de cada slide 
 
 | Slide | Conteúdo | Tempo | Quem |
 |---|---|---|---|
-| 1 | Capa e pergunta | 0:30 | Integrante 1 |
-| 2 | Problema e objetivo | 1:00 | Integrante 1 |
-| 3 | Dados | 1:00 | Integrante 1 |
-| 4 | Data leakage: o Sopro | 1:30 | Integrante 2 |
-| 5 | Pré-processamento sem vazamento | 1:30 | Integrante 2 |
-| 6 | Protocolo de avaliação | 1:30 | Integrante 2 |
-| 7 | Modelos e hiperparâmetros | 1:00 | Integrante 3 |
-| 8 | Resultado principal | 2:00 | Integrante 3 |
-| 9 | A diferença é real? | 1:30 | Integrante 3 |
-| 10 | Desbalanceamento e limiar | 1:00 | Integrante 4 |
-| 11 | Erros e atributos | 1:30 | Integrante 4 |
-| 12 | Conclusão | 1:00 | Integrante 4 |
+| 1 | Capa e pergunta | 0:30 | Caio |
+| 2 | Problema e objetivo | 1:00 | Caio |
+| 3 | Dados | 1:00 | Caio |
+| 4 | Data leakage: o Sopro | 1:30 | Pedro |
+| 5 | Pré-processamento sem vazamento | 1:30 | Pedro |
+| 6 | Protocolo de avaliação | 1:30 | Pedro |
+| 7 | Modelos e hiperparâmetros | 1:00 | Rafael |
+| 8 | Resultado principal | 2:00 | Rafael |
+| 9 | A diferença é real? | 1:30 | Rafael |
+| 10 | Desbalanceamento e limiar | 1:00 | Yuri |
+| 11 | Erros e atributos | 1:30 | Yuri |
+| 12 | Conclusão | 1:00 | Yuri |
 | | **Total** | **15:00** | |
 
-Com 3 integrantes: o Integrante 4 assume os slides 10–12, e o Integrante 1 fica com os slides 1–4.
 
 ## 2. A frase de cada slide
 
@@ -88,6 +87,6 @@ Se o tempo apertar, diga só isto:
 
 ## 4. Antes de apresentar
 
-- [ ] Trocar `[Integrante …]`, `[N]`, `[Instituição]` e `[link do repositório]` na capa e no slide 12.
+- [ ] Confirmar a divisão dos slides entre Caio, Pedro, Rafael e Yuri (sugestão pela ordem dos nomes).
 - [ ] Ensaiar com cronômetro (meta: 14:30).
 - [ ] Cada integrante ler a seção 3 inteira.
