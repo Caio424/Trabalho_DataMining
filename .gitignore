@@ -15,3 +15,4 @@ saida/UCMF_transformed.csv
 !artigo/main.pdf
 # previsões por paciente (rótulo de cada registro): dado individual, não é público
 saida/a2/oof.csv
+.venv/
