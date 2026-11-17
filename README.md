@@ -52,4 +52,4 @@ Para compilar o artigo: `tectonic artigo/main.tex` (ou envie a pasta `artigo/` a
 
 ## Uso de IA generativa
 
-O assistente Claude (Anthropic), via Claude Code, apoiou a implementação do código, a organização do protocolo experimental, a redação inicial do artigo e dos slides e a complementação das referências. O grupo revisou o código e conferiu os resultados.
+O assistente Claude (Anthropic), via Claude Code, apoiou a implementação do código, a organização do protocolo experimental, a redação inicial do artigo e dos slides, a busca e conferência das referências e a revisão final da redação. O grupo revisou o código e conferiu os resultados.
