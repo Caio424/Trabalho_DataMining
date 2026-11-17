@@ -214,6 +214,30 @@ def tabela_ablacao(resumo: pd.DataFrame, melhor: str, destino: Path):
 
 
 # ---------------------------------------------------------------- números
+def descrever_params(moda: dict) -> str:
+    """Hiperparâmetros em português corrente (o artigo não deve ter nomes de código)."""
+    partes = []
+    for chave, v in moda.items():
+        chave = chave.removeprefix("modelo__")
+        if chave == "max_depth":
+            partes.append("profundidade sem limite" if v is None else f"profundidade máxima {v}")
+        elif chave == "min_samples_leaf":
+            partes.append(f"no mínimo {v} instância{'s' if v != 1 else ''} por folha")
+        elif chave == "max_features":
+            partes.append("raiz quadrada do número de atributos em cada divisão" if v == "sqrt"
+                          else f"{num(v * 100, 0)}\\% dos atributos em cada divisão")
+        elif chave == "learning_rate":
+            partes.append(f"taxa de aprendizado {num(v, 2).rstrip('0').rstrip(',')}")
+        elif chave == "l2_regularization":
+            partes.append("sem regularização L2" if v == 0 else
+                          f"regularização L2 de {num(v, 2).rstrip('0').rstrip(',')}")
+        elif chave == "C":
+            partes.append(f"C = {num(v, 2).rstrip('0').rstrip(',')}")
+        else:
+            partes.append(f"{chave.replace('_', ' ')} {v}")
+    return ", ".join(partes[:-1]) + " e " + partes[-1] if len(partes) > 1 else "".join(partes)
+
+
 def numeros(origem: Path, resumo: pd.DataFrame, melhor: str, destino: Path):
     X, y, _ = carregar_xy("principal")
     t5 = json.loads((origem / "teste_5x2cv.json").read_text(encoding="utf-8"))
@@ -310,13 +334,13 @@ def numeros(origem: Path, resumo: pd.DataFrame, melhor: str, destino: Path):
     m["pctSinalSemMotivos"] = num((restrito - 0.5) / (principal - 0.5) * 100, 0)
     m["pctAusentePa"] =num(X["PA SISTOLICA"].isna().mean() * 100, 1)
     m["pctAusentePpa"] = num(X["ppa_ausente"].mean() * 100, 1)
+    # a ausência de PA não é aleatória: concentra-se nos lactentes
+    m["pctAusentePaLactente"] = num(X.loc[X["IDADE"] < 1, "PA SISTOLICA"].isna().mean() * 100, 0)
+    m["pctAusentePaAdolesc"] = num(X.loc[X["IDADE"] >= 10, "PA SISTOLICA"].isna().mean() * 100, 0)
     resumo_exec = json.loads((origem / "resumo.json").read_text(encoding="utf-8"))
     m["tempoMin"] = num(resumo_exec["tempo_s"] / 60, 0)
     m["cLogreg"] = num(params["principal"]["logreg"]["moda"]["modelo__C"], 2).rstrip("0").rstrip(",")
-    m["paramsMelhor"] = ", ".join(
-        f"{k.removeprefix('modelo__').replace('_', chr(92) + '_')} = "
-        f"{num(v, 2).rstrip('0').rstrip(',') if isinstance(v, float) else v}"
-        for k, v in params["principal"][melhor]["moda"].items())
+    m["paramsMelhor"] = descrever_params(params["principal"][melhor]["moda"])
     linhas = [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in m.items()]
     (destino / "numeros.tex").write_text("% gerado por src/m06_figuras_tabelas.py - não editar\n"
                                          + "\n".join(linhas) + "\n", encoding="utf-8")

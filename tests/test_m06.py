@@ -44,6 +44,24 @@ def test_macros_das_correcoes_da_revisao(artigo):
     assert "Sem Sopro e B2" in (artigo / "tabelas/tab_ablacao.tex").read_text(encoding="utf-8")
 
 
+def test_hiperparametros_descritos_sem_nomes_de_codigo(artigo):
+    import re
+    tex = (artigo / "numeros.tex").read_text(encoding="utf-8")
+    valor = re.search(r"\\newcommand\{\\paramsMelhor\}\{(.*)\}", tex).group(1)
+    assert valor and "_" not in valor and "modelo" not in valor
+
+
+def test_descrever_params_em_portugues():
+    from m06_figuras_tabelas import descrever_params
+    assert descrever_params({"modelo__max_depth": None, "modelo__max_features": "sqrt",
+                             "modelo__min_samples_leaf": 5}) == (
+        "profundidade sem limite, raiz quadrada do número de atributos em cada divisão "
+        "e no mínimo 5 instâncias por folha")
+    assert descrever_params({"modelo__l2_regularization": 0, "modelo__learning_rate": 0.1,
+                             "modelo__max_depth": 3}) == (
+        "sem regularização L2, taxa de aprendizado 0,1 e profundidade máxima 3")
+
+
 def test_macros_sem_digitos_no_nome(artigo):
     import re
     nomes = re.findall(r"\\newcommand\{\\([^}]*)\}",(artigo / "numeros.tex").read_text(encoding="utf-8"))
