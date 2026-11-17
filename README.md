@@ -24,12 +24,12 @@ Requisitos: Python 3.13 e as versões fixadas em `requirements.txt`.
 pip install -r requirements.txt
 # os dados NÃO são distribuídos neste repositório: coloque o UCMF_raw.csv
 # (fornecido na disciplina) na raiz do projeto antes de rodar
-python main_a2.py     # A2: limpeza (se faltar o CSV limpo), experimentos, figuras e tabelas (~50 min)
+python main_a2.py     # A2: limpeza (se faltar o CSV limpo), experimentos, figuras e tabelas (~30 a 50 min)
 python main.py        # opcional, A1 completa: também gera o relatório .docx (usa o Word via COM)
 python -m pytest      # testes (~15 min; incluem uma execução reduzida dos experimentos)
 ```
 
-Toda a aleatoriedade usa `random_state = 42` (`src/config.py`). Rodar `main_a2.py` de novo reproduz exatamente os arquivos de `saida/a2/`.
+Toda a aleatoriedade usa `random_state = 42` (`src/config.py`). Rodar `main_a2.py` de novo reproduz os resultados de `saida/a2/` e as figuras do artigo. A única exceção conhecida são as linhas com SMOTE, que podem variar na 3ª casa decimal entre máquinas (provavelmente por empates de distância na busca de vizinhos do SMOTE, feita em paralelo). O tempo de execução também depende da máquina (de ~30 a ~50 min).
 
 Para compilar o artigo: `tectonic artigo/main.tex` (ou envie a pasta `artigo/` ao Overleaf). Todos os números do texto vêm de `artigo/numeros.tex`, gerado por `src/m06_figuras_tabelas.py`.
 
